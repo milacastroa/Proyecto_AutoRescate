@@ -1,6 +1,5 @@
 package co.edu.unbosque.model;
 
-
-public class KitAtencion {
+public class NivelPrioridad {
 
 }
