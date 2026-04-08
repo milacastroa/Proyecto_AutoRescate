@@ -5,7 +5,7 @@ public class ListaEnlazada {
 	private int tamaño;
 	
 // Constructor
-	public ListaEnlazada(Nodo cabeza, int tamaño) {
+	public ListaEnlazada() {
 		this.cabeza= null; // se inicializa vacia hasta que se determine su uso
 		this.tamaño=0; // igual que la cabeza, luego se define longitudes
 	}
@@ -35,7 +35,7 @@ public class ListaEnlazada {
 			return null; 
 	}
 	
-	private boolean eliminar(String id) {
+	public boolean eliminar(String id) {
 		if(cabeza==null) {
 			return false;
 		}
@@ -50,7 +50,7 @@ public class ListaEnlazada {
 		// uso normal
 		Nodo anterior=cabeza;
 			while(anterior.siguiente!=null) {
-				if(anterior.dato.toString().contains(id)) {
+				if(anterior.siguiente.dato.toString().contains(id)) {
 					anterior.siguiente=anterior.siguiente.siguiente;
 					tamaño--;
 					return true;

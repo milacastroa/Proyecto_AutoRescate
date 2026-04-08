@@ -6,7 +6,7 @@ public class Cola {
 	private int tamaño;
 	
 //Constructor	
-	public Cola(Nodo frente, Nodo fin, int tamaño) {
+	public Cola() {
 		//al iniciar la cola esta completamente vacia
 		this.frente=null;
 		this.fin=null;

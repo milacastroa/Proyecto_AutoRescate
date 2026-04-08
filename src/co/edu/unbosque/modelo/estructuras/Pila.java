@@ -4,7 +4,7 @@ public class Pila {
 	private Nodo cima;
 	private int tamaño;
 //Constructor
-	public Pila(Nodo cima, int tamaño) {
+	public Pila() {
 		this.cima = null;
 		this.tamaño=0; // igual que en la lista dejamos todo preparado para iniciarla desde ceros	
 	}
