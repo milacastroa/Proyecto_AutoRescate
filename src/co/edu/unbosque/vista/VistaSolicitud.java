@@ -23,7 +23,6 @@ public class VistaSolicitud extends JFrame {
         panel = new PanelSolicitud(controlador);
         add(panel);
 
-        // ===== BOTÓN VOLVER =====
         panel.getBtnVolver().addActionListener(e -> {
             anterior.setVisible(true);
             this.dispose();

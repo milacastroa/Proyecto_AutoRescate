@@ -3,18 +3,15 @@ package co.edu.unbosque.vista;
 import javax.swing.*;
 import java.awt.*;
 
-import co.edu.unbosque.controlador.Controlador;
-import co.edu.unbosque.controlador.ControladorRegistro;
+import co.edu.unbosque.controlador.*;
+import co.edu.unbosque.modelo.estructuras.*;
 
 public class VistaPrincipal extends JFrame {
 
     private Controlador controlador;
     private ControladorRegistro controladorRegistro;
 
-    public VistaPrincipal(Controlador controlador, ControladorRegistro controladorRegistro) {
-
-        this.controlador = controlador;
-        this.controladorRegistro = controladorRegistro;
+    public VistaPrincipal() {
 
         setTitle("AutoRescate 24/7");
         setSize(1040, 700);
@@ -26,6 +23,29 @@ public class VistaPrincipal extends JFrame {
         fondo.setLayout(null);
         add(fondo);
 
+        // ===== 🔥 CREAR ESTRUCTURAS (CLAVE) =====
+        ListaEnlazada listaUnidades = new ListaEnlazada();
+        ListaEnlazada listaTecnicos = new ListaEnlazada();
+        ListaEnlazada listaClientes = new ListaEnlazada();
+        ListaEnlazada listaSolicitudesAtendidas = new ListaEnlazada();
+
+        Cola colaSolicitudes = new Cola();
+        ColaPrioridad colaCriticas = new ColaPrioridad();
+
+        Pila pilaKits = new Pila();
+        Pila pilaOperaciones = new Pila();
+
+        // ===== CONTROLADORES =====
+        controlador = new Controlador(this);
+
+        controladorRegistro = new ControladorRegistro(
+                this,
+                listaUnidades,
+                listaTecnicos,
+                listaClientes,
+                pilaOperaciones
+        );
+
         // ===== BOTONES =====
         JButton btnSolicitudes = new JButton();
         btnSolicitudes.setBounds(80, 410, 180, 50);
@@ -35,8 +55,8 @@ public class VistaPrincipal extends JFrame {
 
         JButton btnTecnicos = new JButton();
         btnTecnicos.setBounds(530, 410, 180, 50);
-        
-        JButton btnKits = new JButton(); 
+
+        JButton btnKits = new JButton();
         btnKits.setBounds(740, 410, 180, 50);
 
         JButton btnClientes = new JButton();
@@ -46,7 +66,7 @@ public class VistaPrincipal extends JFrame {
         btnControl.setBounds(530, 540, 180, 50);
 
         JButton[] botones = {
-            btnSolicitudes, btnUnidades, btnTecnicos, btnClientes, btnControl
+            btnSolicitudes, btnUnidades, btnTecnicos, btnKits, btnClientes, btnControl
         };
 
         for (JButton b : botones) {
@@ -74,7 +94,7 @@ public class VistaPrincipal extends JFrame {
             new VistaTecnico(this, controladorRegistro).setVisible(true);
             this.setVisible(false);
         });
-        
+
         btnKits.addActionListener(e -> {
             new VistaKits(this).setVisible(true);
             this.setVisible(false);

@@ -8,11 +8,12 @@ import co.edu.unbosque.modelo.entidades.*;
 
 public class PanelCliente extends JPanel {
 
-    private JTextField txtId;
     private JTextField txtNombre;
     private JTextField txtZona;
 
     private JComboBox<TipoCliente> comboTipo;
+
+    private JTextArea areaClientes;
 
     private JButton btnRegistrar;
     private JButton btnVolver;
@@ -29,7 +30,6 @@ public class PanelCliente extends JPanel {
         fondo.setLayout(null);
         add(fondo, BorderLayout.CENTER);
 
-        // ===== CAMPOS =====
         txtNombre = new JTextField();
         txtNombre.setBounds(200, 260, 220, 30);
         fondo.add(txtNombre);
@@ -42,7 +42,12 @@ public class PanelCliente extends JPanel {
         txtZona.setBounds(200, 380, 220, 30);
         fondo.add(txtZona);
 
-        // ===== BOTONES =====
+        areaClientes = new JTextArea();
+        areaClientes.setEditable(false);
+        JScrollPane scroll = new JScrollPane(areaClientes);
+        scroll.setBounds(550, 290, 350, 300);
+        fondo.add(scroll);
+
         btnRegistrar = new JButton();
         btnRegistrar.setBounds(120, 470, 200, 60);
 
@@ -60,27 +65,35 @@ public class PanelCliente extends JPanel {
             fondo.add(b);
         }
 
-        // ===== ACCIÓN =====
         btnRegistrar.addActionListener(e -> {
 
-            String id = txtId.getText();
             String nombre = txtNombre.getText();
             String zona = txtZona.getText();
             TipoCliente tipo = (TipoCliente) comboTipo.getSelectedItem();
 
-            if (id.isEmpty() || nombre.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Complete los campos obligatorios");
+            if (nombre.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese el nombre");
                 return;
             }
 
-            controladorR.registrarCliente(nombre, tipo);
+            try {
+                controladorR.registrarCliente(nombre, tipo);
 
-            JOptionPane.showMessageDialog(this, "Cliente registrado correctamente");
+                areaClientes.append(
+                    "Nombre: " + nombre +
+                    " | Tipo: " + tipo +
+                    " | Zona: " + zona + "\n"
+                );
 
-            // limpiar
-            txtId.setText("");
-            txtNombre.setText("");
-            txtZona.setText("");
+                JOptionPane.showMessageDialog(this, "Cliente registrado correctamente");
+
+                txtNombre.setText("");
+                txtZona.setText("");
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Error al registrar cliente");
+            }
         });
     }
 

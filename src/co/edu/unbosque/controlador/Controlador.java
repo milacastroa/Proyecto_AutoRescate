@@ -50,7 +50,11 @@ public class Controlador {
 
     // subcontroladores
 
-    public void registrarCliente(String nombre, TipoCliente tipo) {
+    public Controlador() {
+		// TODO Auto-generated constructor stub
+	}
+ 
+	public void registrarCliente(String nombre, TipoCliente tipo) {
         ctrlRegistro.registrarCliente(nombre, tipo);
         actualizarVista();
     }

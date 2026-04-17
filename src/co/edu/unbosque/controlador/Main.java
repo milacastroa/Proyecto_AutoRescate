@@ -7,11 +7,14 @@ import co.edu.unbosque.vista.VistaPrincipal;
 
 public class Main {
 	
-	 public static void main(String[] args) {
-	        SwingUtilities.invokeLater(() -> {
-	            VistaPrincipal ventana = new VistaPrincipal(null, null);
-	            ventana.setVisible(true);
-	        });
-	    }
+	public static void main(String[] args) {
+	    SwingUtilities.invokeLater(() -> {
+
+	        Controlador controlador = new Controlador();
+
+	        VistaPrincipal ventana = new VistaPrincipal();
+	        ventana.setVisible(true);
+	    });
+	}
 
 }

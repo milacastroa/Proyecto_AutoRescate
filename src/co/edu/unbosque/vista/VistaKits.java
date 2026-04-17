@@ -19,7 +19,6 @@ public class VistaKits extends JFrame {
         panel = new PanelKits();
         add(panel);
 
-        // botón volver
         panel.getBtnVolver().addActionListener(e -> {
             anterior.setVisible(true);
             this.dispose();

@@ -21,7 +21,9 @@ public class ControladorRegistro {
         this.pilaOperaciones = pilaOperaciones;
     }
 
-    public void registrarCliente(String nombre, TipoCliente tipo) {
+   
+
+	public void registrarCliente(String nombre, TipoCliente tipo) {
         Cliente c = new Cliente(nombre, tipo);
         listaClientes.insertar(c);
         pilaOperaciones.apilar(new Operacion(TipoOperacion.CAMBIO_ESTADO,

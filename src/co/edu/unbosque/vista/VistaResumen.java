@@ -19,7 +19,6 @@ public class VistaResumen extends JFrame {
         panel = new PanelResumen();
         add(panel);
 
-        // botón volver
         panel.getBtnVolver().addActionListener(e -> {
             anterior.setVisible(true);
             this.dispose();

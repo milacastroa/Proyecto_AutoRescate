@@ -31,35 +31,29 @@ public class PanelSolicitud extends JPanel {
         fondo.setLayout(null);
         add(fondo, BorderLayout.CENTER);
 
-        // ===== CAMPO CLIENTE =====
         txtCliente = new JTextField();
         txtCliente.setBounds(200, 265, 220, 30);
         fondo.add(txtCliente);
 
-        // ===== 🔥 COMBO SERVICIO (REEMPLAZA DESCRIPCIÓN) =====
         comboServicio = new JComboBox<>(TipoServicio.values());
-        comboServicio.setBounds(200, 320, 220, 30); // misma posición de descripción
+        comboServicio.setBounds(200, 320, 220, 30); 
         fondo.add(comboServicio);
 
-        // ===== CHECK CRÍTICO =====
         chkCritico = new JCheckBox();
         chkCritico.setBounds(200, 370, 60, 60);
         chkCritico.setOpaque(false);
         fondo.add(chkCritico);
 
-        // ===== ÁREA CRÍTICAS =====
         areaCriticas = new JTextArea();
         JScrollPane scrollCriticas = new JScrollPane(areaCriticas);
         scrollCriticas.setBounds(550, 290, 350, 150);
         fondo.add(scrollCriticas);
 
-        // ===== ÁREA NORMALES =====
         areaNormales = new JTextArea();
         JScrollPane scrollNormales = new JScrollPane(areaNormales);
         scrollNormales.setBounds(550, 480, 350, 150);
         fondo.add(scrollNormales);
 
-        // ===== BOTONES INVISIBLES =====
         btnCrear = new JButton();
         btnCrear.setBounds(110, 455, 200, 60);
 
@@ -77,7 +71,6 @@ public class PanelSolicitud extends JPanel {
             fondo.add(b);
         }
 
-        // ===== ACCIÓN CREAR =====
         btnCrear.addActionListener(e -> {
 
             String cliente = txtCliente.getText();
@@ -93,10 +86,8 @@ public class PanelSolicitud extends JPanel {
                     ? NivelCriticidad.CRITICO
                     : NivelCriticidad.NORMAL;
 
-            // 🔥 BACKEND
             controlador.crearSolicitud(cliente, servicio, nivel);
 
-            // 🔥 VISUAL
             String solicitud = cliente + " | " + servicio;
 
             if (esCritico) {
@@ -105,7 +96,6 @@ public class PanelSolicitud extends JPanel {
                 areaNormales.append(solicitud + "\n");
             }
 
-            // limpiar
             txtCliente.setText("");
             chkCritico.setSelected(false);
         });

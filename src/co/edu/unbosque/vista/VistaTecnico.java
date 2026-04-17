@@ -77,7 +77,6 @@ public class VistaTecnico extends JFrame {
             fondo.add(b);
         }
 
-        // ===== ACCIONES =====
         btnRegistrar.addActionListener(e -> {
             String nombre = txtNombre.getText();
             String especialidad = (String) comboEspecialidad.getSelectedItem();
