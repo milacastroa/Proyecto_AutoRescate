@@ -9,7 +9,7 @@ public class Main {
 	
 	 public static void main(String[] args) {
 	        SwingUtilities.invokeLater(() -> {
-	            VistaPrincipal ventana = new VistaPrincipal();
+	            VistaPrincipal ventana = new VistaPrincipal(null, null);
 	            ventana.setVisible(true);
 	        });
 	    }

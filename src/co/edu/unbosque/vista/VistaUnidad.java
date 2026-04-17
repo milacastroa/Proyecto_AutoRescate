@@ -1,16 +1,19 @@
 package co.edu.unbosque.vista;
 
 import javax.swing.*;
+
+import co.edu.unbosque.controlador.ControladorRegistro;
+
 import java.awt.*;
 
 public class VistaUnidad extends JFrame {
 
     private JFrame anterior;
+    private ControladorRegistro controlador;
 
-    public VistaUnidad(JFrame anterior) {
-
-        this.anterior = anterior;
-
+    public VistaUnidad(JFrame anterior, ControladorRegistro controlador) {
+        this.controlador = controlador;
+    
         setTitle("Registrar Unidad");
         setSize(1040, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

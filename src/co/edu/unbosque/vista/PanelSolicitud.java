@@ -3,11 +3,15 @@ package co.edu.unbosque.vista;
 import javax.swing.*;
 import java.awt.*;
 
+import co.edu.unbosque.controlador.Controlador;
+import co.edu.unbosque.modelo.entidades.*;
+
 public class PanelSolicitud extends JPanel {
 
     private JTextField txtCliente;
-    private JTextField txtDescripcion;
     private JCheckBox chkCritico;
+
+    private JComboBox<TipoServicio> comboServicio;
 
     private JTextArea areaCriticas;
     private JTextArea areaNormales;
@@ -15,27 +19,29 @@ public class PanelSolicitud extends JPanel {
     private JButton btnCrear;
     private JButton btnVolver;
 
-    public PanelSolicitud() {
+    private Controlador controlador;
 
-        setLayout(null);
+    public PanelSolicitud(Controlador controlador) {
 
-        // ===== FONDO =====
+        this.controlador = controlador;
+
         setLayout(new BorderLayout());
 
         PanelFondo fondo = new PanelFondo("/img/solicitud.png");
         fondo.setLayout(null);
-
         add(fondo, BorderLayout.CENTER);
 
-        // ===== CAMPOS =====
+        // ===== CAMPO CLIENTE =====
         txtCliente = new JTextField();
         txtCliente.setBounds(200, 265, 220, 30);
         fondo.add(txtCliente);
 
-        txtDescripcion = new JTextField();
-        txtDescripcion.setBounds(200, 320, 220, 30);
-        fondo.add(txtDescripcion);
+        // ===== 🔥 COMBO SERVICIO (REEMPLAZA DESCRIPCIÓN) =====
+        comboServicio = new JComboBox<>(TipoServicio.values());
+        comboServicio.setBounds(200, 320, 220, 30); // misma posición de descripción
+        fondo.add(comboServicio);
 
+        // ===== CHECK CRÍTICO =====
         chkCritico = new JCheckBox();
         chkCritico.setBounds(200, 370, 60, 60);
         chkCritico.setOpaque(false);
@@ -75,15 +81,23 @@ public class PanelSolicitud extends JPanel {
         btnCrear.addActionListener(e -> {
 
             String cliente = txtCliente.getText();
-            String descripcion = txtDescripcion.getText();
             boolean esCritico = chkCritico.isSelected();
+            TipoServicio servicio = (TipoServicio) comboServicio.getSelectedItem();
 
-            if (cliente.isEmpty() || descripcion.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Complete todos los campos");
+            if (cliente.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Ingrese el cliente");
                 return;
             }
 
-            String solicitud = cliente + " | " + descripcion;
+            NivelCriticidad nivel = esCritico
+                    ? NivelCriticidad.CRITICO
+                    : NivelCriticidad.NORMAL;
+
+            // 🔥 BACKEND
+            controlador.crearSolicitud(cliente, servicio, nivel);
+
+            // 🔥 VISUAL
+            String solicitud = cliente + " | " + servicio;
 
             if (esCritico) {
                 areaCriticas.append(solicitud + " (CRÍTICO)\n");
@@ -91,20 +105,13 @@ public class PanelSolicitud extends JPanel {
                 areaNormales.append(solicitud + "\n");
             }
 
-            // limpiar campos
+            // limpiar
             txtCliente.setText("");
-            txtDescripcion.setText("");
             chkCritico.setSelected(false);
         });
     }
 
-    // ===== GETTERS =====
-
     public JButton getBtnVolver() {
         return btnVolver;
-    }
-
-    public JButton getBtnCrear() {
-        return btnCrear;
     }
 }

@@ -3,38 +3,50 @@ package co.edu.unbosque.vista;
 import javax.swing.*;
 import java.awt.*;
 
-import javax.swing.*;
-import java.awt.*;
+import co.edu.unbosque.controlador.Controlador;
+import co.edu.unbosque.controlador.ControladorRegistro;
 
 public class VistaPrincipal extends JFrame {
 
-    public VistaPrincipal() {
+    private Controlador controlador;
+    private ControladorRegistro controladorRegistro;
+
+    public VistaPrincipal(Controlador controlador, ControladorRegistro controladorRegistro) {
+
+        this.controlador = controlador;
+        this.controladorRegistro = controladorRegistro;
 
         setTitle("AutoRescate 24/7");
         setSize(1040, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        // ===== FONDO =====
         PanelFondo fondo = new PanelFondo("/img/fondoPrincipal.png");
+        fondo.setLayout(null);
         add(fondo);
 
-        JButton btnSolicitudes = new JButton("");
+        // ===== BOTONES =====
+        JButton btnSolicitudes = new JButton();
         btnSolicitudes.setBounds(80, 410, 180, 50);
 
-        JButton btnUnidades = new JButton("");
+        JButton btnUnidades = new JButton();
         btnUnidades.setBounds(325, 410, 180, 50);
 
-        JButton btnTecnicos = new JButton("");
+        JButton btnTecnicos = new JButton();
         btnTecnicos.setBounds(530, 410, 180, 50);
-
-        JButton btnKits = new JButton("");
+        
+        JButton btnKits = new JButton(); // 🔥 ESTE ES EL QUE TE FALTABA
         btnKits.setBounds(740, 410, 180, 50);
 
-        JButton btnControl = new JButton("");
-        btnControl.setBounds(450, 540, 180, 50);
+        JButton btnClientes = new JButton();
+        btnClientes.setBounds(325, 540, 180, 50);
+
+        JButton btnControl = new JButton();
+        btnControl.setBounds(530, 540, 180, 50);
 
         JButton[] botones = {
-            btnSolicitudes, btnUnidades, btnTecnicos, btnKits, btnControl
+            btnSolicitudes, btnUnidades, btnTecnicos, btnClientes, btnControl
         };
 
         for (JButton b : botones) {
@@ -42,33 +54,43 @@ public class VistaPrincipal extends JFrame {
             b.setContentAreaFilled(false);
             b.setBorderPainted(false);
             b.setFocusPainted(false);
+            b.setCursor(new Cursor(Cursor.HAND_CURSOR));
             fondo.add(b);
         }
 
+        // ===== ACCIONES =====
 
         btnSolicitudes.addActionListener(e -> {
-            new VistaSolicitud(this).setVisible(true);
+            new VistaSolicitud(this, controlador).setVisible(true);
             this.setVisible(false);
         });
 
-        btnUnidades.addActionListener(e -> {
-            new VistaUnidad(this).setVisible(true);
+        btnClientes.addActionListener(e -> {
+            new VistaCliente(this, controladorRegistro).setVisible(true);
             this.setVisible(false);
         });
 
         btnTecnicos.addActionListener(e -> {
-           new VistaTecnico(this).setVisible(true);
+            new VistaTecnico(this, controladorRegistro).setVisible(true);
             this.setVisible(false);
         });
 
-        btnKits.addActionListener(e -> {
-        	new VistaKits(this).setVisible(true);
+        btnUnidades.addActionListener(e -> {
+            new VistaUnidad(this, controladorRegistro).setVisible(true);
             this.setVisible(false);
         });
-        
+
         btnControl.addActionListener(e -> {
-        	new VistaResumen(this).setVisible(true);
+            new VistaResumen(this).setVisible(true);
             this.setVisible(false);
         });
+    }
+
+    public void mostrarError(String msg) {
+        JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void mostrarMensaje(String msg) {
+        JOptionPane.showMessageDialog(this, msg, "Info", JOptionPane.INFORMATION_MESSAGE);
     }
 }

@@ -1,13 +1,20 @@
 package co.edu.unbosque.vista;
 
 import javax.swing.*;
+
+import co.edu.unbosque.controlador.ControladorRegistro;
+
 import java.awt.*;
 
 public class VistaTecnico extends JFrame {
 
     private JFrame anterior;
 
-    public VistaTecnico(JFrame anterior) {
+    private ControladorRegistro controlador;
+
+    public VistaTecnico(JFrame anterior, ControladorRegistro controlador) {
+        this.controlador = controlador;
+    
 
         this.anterior = anterior;
 
