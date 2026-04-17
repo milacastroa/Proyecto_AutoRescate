@@ -36,7 +36,7 @@ public class VistaPrincipal extends JFrame {
         JButton btnTecnicos = new JButton();
         btnTecnicos.setBounds(530, 410, 180, 50);
         
-        JButton btnKits = new JButton(); // 🔥 ESTE ES EL QUE TE FALTABA
+        JButton btnKits = new JButton(); 
         btnKits.setBounds(740, 410, 180, 50);
 
         JButton btnClientes = new JButton();
@@ -72,6 +72,11 @@ public class VistaPrincipal extends JFrame {
 
         btnTecnicos.addActionListener(e -> {
             new VistaTecnico(this, controladorRegistro).setVisible(true);
+            this.setVisible(false);
+        });
+        
+        btnKits.addActionListener(e -> {
+            new VistaKits(this).setVisible(true);
             this.setVisible(false);
         });
 
