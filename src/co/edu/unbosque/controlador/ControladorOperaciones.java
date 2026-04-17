@@ -26,7 +26,7 @@ public class ControladorOperaciones {
         }
         Operacion op = (Operacion) pilaOperaciones.desapilar();
         vista.mostrarMensaje("Revertida: " + op.getDescripcion()
-                + " | Antes: " + op.getDatosAntes());
+                + " | Estado anterior: " + op.getDatosAntes());
     }
 
     public void exportarCSV() {

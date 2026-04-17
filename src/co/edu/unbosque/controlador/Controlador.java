@@ -6,97 +6,120 @@ import co.edu.unbosque.vista.VistaPrincipal;
 
 public class Controlador {
 
-    private VistaPrincipal vista;
+	private VistaPrincipal vista;
 
-    // Estructuras compartidas
-    private ListaEnlazada listaUnidades;
-    private ListaEnlazada listaTecnicos;
-    private ListaEnlazada listaClientes;
-    private ListaEnlazada listaSolicitudesAtendidas;
-    private Cola colaSolicitudes;
-    private ColaPrioridad colaCriticas;
-    private Pila pilaKits;
-    private Pila pilaOperaciones;
+	// estructuras compartidas entre subcontroladores
+	private ListaEnlazada listaUnidades;
+	private ListaEnlazada listaTecnicos;
+	private ListaEnlazada listaClientes;
+	private ListaEnlazada listaSolicitudesAtendidas;
+	private Cola colaSolicitudes;
+	private ColaPrioridad colaCriticas;
+	private Pila pilaKits;
+	private Pila pilaOperaciones;
 
-    // Subcontroladores
-    private ControladorRegistro ctrlRegistro;
-    private ControladorSolicitudes ctrlSolicitudes;
-    private ControladorKits ctrlKits;
-    private ControladorOperaciones ctrlOperaciones;
+	private ControladorRegistro ctrlRegistro;
+	private ControladorSolicitudes ctrlSolicitudes;
+	private ControladorKits ctrlKits;
+	private ControladorOperaciones ctrlOperaciones;
 
-    public Controlador(VistaPrincipal vista) {
-        this.vista = vista;
+	public Controlador(VistaPrincipal vista) {
+		this.vista = vista;
 
-        // Inicializar estructuras
-        this.listaUnidades = new ListaEnlazada();
-        this.listaTecnicos = new ListaEnlazada();
-        this.listaClientes = new ListaEnlazada();
-        this.listaSolicitudesAtendidas = new ListaEnlazada();
-        this.colaSolicitudes = new Cola();
-        this.colaCriticas = new ColaPrioridad();
-        this.pilaKits = new Pila();
-        this.pilaOperaciones = new Pila();
+		listaUnidades = new ListaEnlazada();
+		listaTecnicos = new ListaEnlazada();
+		listaClientes = new ListaEnlazada();
+		listaSolicitudesAtendidas = new ListaEnlazada();
+		colaSolicitudes = new Cola();
+		colaCriticas = new ColaPrioridad();
+		pilaKits = new Pila();
+		pilaOperaciones = new Pila();
 
-        // Pasar estructuras a subcontroladores
-        this.ctrlRegistro = new ControladorRegistro(vista,
-                listaUnidades, listaTecnicos, listaClientes, pilaOperaciones);
-        this.ctrlSolicitudes = new ControladorSolicitudes(vista,
-                listaUnidades, listaTecnicos, listaClientes,
-                colaSolicitudes, colaCriticas, pilaOperaciones);
-        this.ctrlKits = new ControladorKits(vista, pilaKits, pilaOperaciones);
-        this.ctrlOperaciones = new ControladorOperaciones(vista,
-                pilaOperaciones, listaSolicitudesAtendidas);
-    }
+		ctrlRegistro = new ControladorRegistro(vista,
+				listaUnidades, listaTecnicos, listaClientes, pilaOperaciones);
+		ctrlSolicitudes = new ControladorSolicitudes(vista,
+				listaUnidades, listaTecnicos, listaClientes,
+				listaSolicitudesAtendidas,
+				colaSolicitudes, colaCriticas, pilaOperaciones);
+		ctrlKits = new ControladorKits(vista, pilaKits, pilaOperaciones);
+		ctrlOperaciones = new ControladorOperaciones(vista,
+				pilaOperaciones, listaSolicitudesAtendidas);
+	}
 
-    // subcontroladores
+	public void registrarCliente(String nombre, TipoCliente tipo) {
+		ctrlRegistro.registrarCliente(nombre, tipo);
+	}
 
-    public void registrarCliente(String nombre, TipoCliente tipo) {
-        ctrlRegistro.registrarCliente(nombre, tipo);
-        actualizarVista();
-    }
+	public void registrarTecnico(String nombre, EspecialidadTecnico especialidad, String zona) {
+		ctrlRegistro.registrarTecnico(nombre, especialidad, zona);
+	}
 
-    public void registrarTecnico(String nombre, EspecialidadTecnico especialidad, String zona) {
-        ctrlRegistro.registrarTecnico(nombre, especialidad, zona);
-        actualizarVista();
-    }
+	public void registrarUnidad(TipoUnidad tipo, String zona) {
+		ctrlRegistro.registrarUnidad(tipo, zona);
+	}
 
-    public void registrarUnidad(TipoUnidad tipo, String zona) {
-        ctrlRegistro.registrarUnidad(tipo, zona);
-        actualizarVista();
-    }
+	public void crearSolicitud(String nombreCliente, TipoServicio tipoServicio,
+			NivelCriticidad criticidad) {
+		ctrlSolicitudes.crearSolicitud(nombreCliente, tipoServicio, criticidad);
+	}
 
-    public void crearSolicitud(String idCliente, TipoServicio tipoServicio,
-            NivelCriticidad criticidad) {
-        ctrlSolicitudes.crearSolicitud(idCliente, tipoServicio, criticidad);
-        actualizarVista();
-    }
+	public SolicitudServicio atenderSiguiente() {
+		return ctrlSolicitudes.atenderSiguiente();
+	}
 
-    public void atenderSiguiente() {
-        ctrlSolicitudes.atenderSiguiente();
-        actualizarVista();
-    }
+	public void devolverKit(TipoServicio tipo) {
+		ctrlKits.devolverKit(tipo);
+	}
 
-    public void devolverKit(TipoServicio tipo) {
-        ctrlKits.devolverKit(tipo);
-        actualizarVista();
-    }
+	public KitAtencion retirarKit() {
+		return ctrlKits.retirarKit();
+	}
 
-    public KitAtencion retirarKit() {
-        KitAtencion kit = ctrlKits.retirarKit();
-        actualizarVista();
-        return kit;
-    }
+	public void revertirOperacion() {
+		ctrlOperaciones.revertirOperacion();
+	}
 
-    public void revertirOperacion() {
-        ctrlOperaciones.revertirOperacion();
-        actualizarVista();
-    }
+	public void exportarCSV() {
+		ctrlOperaciones.exportarCSV();
+	}
 
-    public void exportarCSV() {
-        ctrlOperaciones.exportarCSV();
-    }
+	// conteos para el panel de resumen
+	public int getConteoUnidadesDisponibles() {
+		Object[] todas = listaUnidades.obtenerTodos();
+		int c = 0;
+		for (Object o : todas) {
+			if (((UnidadServicio) o).isDisponible()) c++;
+		}
+		return c;
+	}
 
-    public void actualizarVista() {
-        // Se implementa cuando la vista esté lista
-    }
+	public int getConteoUnidadesOcupadas() {
+		Object[] todas = listaUnidades.obtenerTodos();
+		int c = 0;
+		for (Object o : todas) {
+			if (!((UnidadServicio) o).isDisponible()) c++;
+		}
+		return c;
+	}
+
+	public int getConteoSolicitudesPendientes() {
+		return colaSolicitudes.getTamano() + colaCriticas.getTamano();
+	}
+
+	public int getConteoSolicitudesCriticas() {
+		return colaCriticas.getTamano();
+	}
+
+	public int getConteoKitsRevision() {
+		return pilaKits.getTamano();
+	}
+
+	public int getConteoTecnicosDisponibles() {
+		Object[] todos = listaTecnicos.obtenerTodos();
+		int c = 0;
+		for (Object o : todos) {
+			if (((Tecnico) o).isDisponible()) c++;
+		}
+		return c;
+	}
 }

@@ -1,58 +1,47 @@
 package co.edu.unbosque.modelo.estructuras;
 
 public class Cola {
-	private Nodo frente;//salida
-	private Nodo fin;// entrada
-	private int tamaño;
-	
-//Constructor	
+	private Nodo frente; // salida
+	private Nodo fin;    // entrada
+	private int tamano;
+
 	public Cola() {
-		//al iniciar la cola esta completamente vacia
-		this.frente=null;
-		this.fin=null;
-		this.tamaño=0;
+		this.frente = null;
+		this.fin = null;
+		this.tamano = 0;
 	}
 
-//Metodos
 	public void encolar(Object dato) {
 		Nodo nuevo = new Nodo(dato);
-		if(estaVacia()) {
+		if (estaVacia()) {
 			frente = nuevo;
 			fin = nuevo;
-		}else {
-			fin.siguiente=nuevo;
+		} else {
+			fin.siguiente = nuevo;
 			fin = nuevo;
 		}
-		tamaño++;
+		tamano++;
 	}
-	
+
 	public Object desencolar() {
-		if(estaVacia()) {
-			return null;
-		}
-		
+		if (estaVacia()) return null;
 		Object dato = frente.dato;
-		frente= frente.siguiente; 
-		
-		if(frente==null) {
-			fin=null;
-		}
-		tamaño--;
+		frente = frente.siguiente;
+		if (frente == null) fin = null;
+		tamano--;
 		return dato;
 	}
-	
+
 	public Object verificar() {
-		if(estaVacia()){
-			return null;
-		}
+		if (estaVacia()) return null;
 		return frente.dato;
 	}
-	
+
 	public boolean estaVacia() {
-		return frente==null;
+		return frente == null;
 	}
-	
-	public int getTamaño() {
-		return tamaño;
+
+	public int getTamano() {
+		return tamano;
 	}
 }
